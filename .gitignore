@@ -1,2 +1,4 @@
 deploy_package.zip
 /bin
+/binbin
+.env
