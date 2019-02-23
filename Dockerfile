@@ -6,5 +6,5 @@ ENV APP_DIR /var/task
 ADD . .
  
 CMD pip install -r requirements.txt -t $APP_DIR && \
-  zip -9 deploy_package.zip fetch_links.py && \
+  zip -9 deploy_package.zip pairs_bot.py && \
   zip -r9 deploy_package.zip *

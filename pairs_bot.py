@@ -6,37 +6,33 @@ import time
 import random
 import sys
 import json
+import asyncio
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 
 from os.path import join, dirname
 from dotenv import load_dotenv
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
-
-#自動ログイン開始
-fb_id = os.getenv("FB_ID", "")
-fb_pass = os.getenv("FB_PASS", "")
-
-if os.getenv("ENVIRONMENT", "") == "develop":
-    driver_path = "./binbin/chromedriver"
-else:
-    driver_path = "./bin/chromedriver"
-
-
-
 def lambda_handler(event, context):
-    options = webdriver.ChromeOptions()
 
-    if os.getenv("ENVIRONMENT", "") == "develop":
-        driver_path = "./binbin/chromedriver"
-    else:
-        # のちほどダウンロードするバイナリを指定
-        options.binary_location = "./bin/headless-chromium"
+    try:
+        #自動ログイン開始
+        options = webdriver.ChromeOptions()
+        dotenv_path = join(dirname(__file__), '.env')
+        load_dotenv(dotenv_path)
+
+        if os.getenv("ENVIRONMENT", "") == "develop":
+            driver_path = "./binbin/chromedriver"
+        else:
+            driver_path = "./bin/chromedriver"
+            # のちほどダウンロードするバイナリを指定
+            options.binary_location = "./bin/headless-chromium"
+
 
         # headlessで動かすために必要なオプション
         options.add_argument("--headless")
@@ -52,14 +48,27 @@ def lambda_handler(event, context):
         options.add_argument("--ignore-certificate-errors")
         options.add_argument("--homedir=/tmp")
 
-    driver = webdriver.Chrome(
-        driver_path,
-        chrome_options=options
-        )
+        fb_id = os.getenv("FB_ID", "")
+        fb_pass = os.getenv("FB_PASS", "")
+        
 
-    driver.get("https://www.facebook.org")
-    driver.find_element_by_id('email').send_keys(fb_id)
-    driver.find_element_by_id('pass').send_keys(fb_pass)
-    driver.find_element_by_id('u_0_2').click()
+        driver = webdriver.Chrome(
+            driver_path,
+            chrome_options=options
+            )
+        # 5の部分をランダムにする
+        # driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        
+        driver.get("https://www.facebook.com")
+        driver.find_element_by_id('email').send_keys(fb_id)
+        driver.find_element_by_id('pass').send_keys(fb_pass)
+        driver.find_elements_by_xpath("//input[@data-testid='royal_login_button']")[0].click()
+
+        print("finish")
+        return "aaa"
+    except Exception as e:
+        print(e, 'error occurred')
+        return "bbb"
 
 lambda_handler("foo", "bar")

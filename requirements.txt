@@ -1,2 +1,2 @@
 Selenium
-dotenv
+python-dotenv
