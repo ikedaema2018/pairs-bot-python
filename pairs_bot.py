@@ -69,6 +69,9 @@ class SetUp():
         driver.find_elements_by_xpath("//input[@data-testid='royal_login_button']")[0].click()
         print("login_finish")
 
+    def pairs_login(self, driver):
+        driver.get("https://pairs.lv/#/login")
+
 
 class PairsMain():
     def __init__(self, driver):
@@ -78,6 +81,7 @@ class PairsMain():
     def random_play_module(self):
         for i in range(self.what_time_play):
             print(i)
+            time.sleep(random.randint(3, 7))
 
 
 
@@ -87,6 +91,7 @@ def lambda_handler(event, context):
         set_up = SetUp()
         driver = set_up.set_up_driver()
         set_up.facebook_login(driver)
+        set_up.pairs_login(driver)
 
         pairs = PairsMain(driver)
         pairs.random_play_module()

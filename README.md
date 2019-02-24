@@ -21,3 +21,7 @@
 #参考にしたサイト
 https://qiita.com/nabehide/items/754eb7b7e9fff9a1047d
 https://pvnotora.com/python-scraping-docker-for-lambda/
+
+
+# 作成したシーケンス図的な
+https://cacoo.com/diagrams/do0kCYRQ8ofGjU1O/A8970
