@@ -79,23 +79,27 @@ class PairsMain():
         self.driver = driver
         self.what_time_play = random.randint(3, 7)
         time.sleep(3)
-        self.driver.get("https://pairs.lv/#/search/grid/2")
+        self.kill_popup()
+        # self.driver.get("https://pairs.lv/#/search/grid/2")
         time.sleep(5)
 
     def kill_popup(self):
         for i in range(3):
             try:
                 time.sleep(random.randint(1, 3))
-                self.driver.find_elements_by_class_name('modal_close')[0].click()
+                modals = self.driver.find_element_by_xpath("//div[@class='box_modal_window modal_animation pickup_modal']")
+                print(modals)
+                time.sleep(1)
+                modals.find_element_by_tag_name("a").click()
             except Exception as e:
                 print("no popup ")
                 print(e)
-                break
+                # break
 
 
     def random_play_module(self):
         for i in range(self.what_time_play):
-            self.kill_popup()
+            # self.kill_popup()
             pairs_comu = PairsComu(self.driver)
             pairs_comu.pairs_comu_main()
 
@@ -106,17 +110,45 @@ class PairsComu():
     def comu_page_for_grid(self):
         self.driver.find_elements_by_link_text("コミュニティを探す")[0].click()
 
-    def joined_comu_enter(self, comu_number):
-        self.driver.find_elements(By.XPATH,
-                                  "//ul[@class='my_community_list']/li")[comu_number].find_element_by_class_name('community_link').click()
+
+    class SeeMyComu():
+        def __init__(self, driver):
+            self.driver = driver
+
+        def joined_comu_enter(self, comu_number):
+            self.driver.find_elements(By.XPATH,
+                                      "//ul[@class='my_community_list']/li")[comu_number].find_element_by_class_name(
+                'community_link').click()
+            time.sleep(random.rand(4, 8))
+
+        def joined_comu_member_click(self):
+            joined_comu_members = range(len(self.driver.find_elements(By.XPATH,
+                                                "//ul[@class='list_view_users']/li")))
+            what_time_click_joined_comu_member = random.randint(0, joined_comu_members)
+
+            # for i in range(what_time_click_joined_comu_member):
+            joined_comu_members[3].find_element_by_tag_name("a").click()
+                
+
+
+
+        def see_my_comu_main(self):
+            # TODO 2列目のゲームナンバーに行く処理も書く
+            game_number = random.randint(0, 4)
+            self.joined_comu_enter(game_number)
+            time.sleep(random.randint(3, 6))
+            self.joined_comu_member_click()
+
 
     def pairs_comu_main(self):
         self.comu_page_for_grid()
         time.sleep(3)
         game_number = random.randint(0, 4)
-        
-        self.joined_comu_enter(game_number)
-        time.sleep(random.randint(3, 6))
+
+        see_comu = self.SeeMyComu(self.driver)
+        see_comu.see_my_comu_main()
+
+# TODO全てのサブモジュールの共通関数を支配するクラスを作成
 
 
 
