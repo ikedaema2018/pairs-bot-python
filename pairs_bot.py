@@ -34,6 +34,7 @@ class SetUp():
         if os.getenv("ENVIRONMENT", "") == "develop":
             print("dev")
             driver_path = "./binbin/chromedriver"
+            options.add_argument("--headless")
         else:
             print("pro")
             driver_path = "./bin/chromedriver"
@@ -98,6 +99,7 @@ class PairsMain():
 
 
     def random_play_module(self):
+        # TODO いくつかのモジュールを用意
         for i in range(self.what_time_play):
             pairs_comu = PairsComu(self.driver)
             pairs_comu.pairs_comu_main()
@@ -107,7 +109,7 @@ class PairsComu():
         self.driver = driver
 
     def comu_page_for_grid(self):
-        self.driver.find_elements_by_link_text("コミュニティを探す")[0].click()
+        self.driver.get("https://pairs.lv/#/community")
 
 
     class SeeMyComu():
