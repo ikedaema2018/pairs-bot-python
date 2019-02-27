@@ -80,26 +80,25 @@ class PairsMain():
         self.what_time_play = random.randint(3, 7)
         time.sleep(3)
         self.kill_popup()
-        # self.driver.get("https://pairs.lv/#/search/grid/2")
         time.sleep(5)
+        self.random_play_module()
 
     def kill_popup(self):
         for i in range(3):
             try:
                 time.sleep(random.randint(1, 3))
                 modals = self.driver.find_element_by_xpath("//div[@class='box_modal_window modal_animation pickup_modal']")
-                print(modals)
-                time.sleep(1)
+                time.sleep(2)
                 modals.find_element_by_tag_name("a").click()
             except Exception as e:
                 print("no popup ")
                 print(e)
-                # break
+                time.sleep(2)
+                break
 
 
     def random_play_module(self):
         for i in range(self.what_time_play):
-            # self.kill_popup()
             pairs_comu = PairsComu(self.driver)
             pairs_comu.pairs_comu_main()
 
@@ -119,15 +118,17 @@ class PairsComu():
             self.driver.find_elements(By.XPATH,
                                       "//ul[@class='my_community_list']/li")[comu_number].find_element_by_class_name(
                 'community_link').click()
-            time.sleep(random.rand(4, 8))
+            time.sleep(random.randint(4, 8))
 
         def joined_comu_member_click(self):
-            joined_comu_members = range(len(self.driver.find_elements(By.XPATH,
-                                                "//ul[@class='list_view_users']/li")))
-            what_time_click_joined_comu_member = random.randint(0, joined_comu_members)
+            joined_comu_members = self.driver.find_elements(By.XPATH, "//ul[@class='list_view_users']/li")
+            what_time_click_joined_comu_member = random.randint(0, len(joined_comu_members))
+            range_from_joined_comu_members = list(range(len(joined_comu_members)))
 
-            # for i in range(what_time_click_joined_comu_member):
-            joined_comu_members[3].find_element_by_tag_name("a").click()
+            for _ in range(what_time_click_joined_comu_member):
+                click_member = random.randint(0, len(range_from_joined_comu_members))
+                joined_comu_members[click_member].find_element_by_tag_name("a").click()
+                time.sleep(random.randint(0, 3))
                 
 
 
@@ -168,6 +169,7 @@ def lambda_handler(event, context):
         return "success"
     except Exception as e:
         print(e, 'error occurred')
-        return "success"
+        time.sleep(30)
+        return "failure"
 
 lambda_handler("foo", "bar")
