@@ -85,22 +85,22 @@ class PairsMain():
         self.random_play_module()
 
     def kill_popup(self):
-    
-        time.sleep(random.randint(5, 8))
+        # time.sleep(random.randint(3, 5))
         print("killPopup")
         try:
             modals = self.driver.find_element_by_xpath("//div[@class='box_modal_window modal_animation pickup_modal']")
-            time.sleep(2)
             modals.find_element_by_tag_name("a").click()
         except Exception as e:
+            time.sleep(6)
             print("no popup normal_modal")
             print(e)
         
         try:
-            time.sleep(random.randint(3, 5))
+            # time.sleep(random.randint(3, 5))
             welcome_modal = self.driver.find_element_by_id("welcome_close_button")
             welcome_modal.click()
         except Exception as e:
+            time.sleep(7)
             print("no popup welcome_modal")
             print(e)
 
@@ -140,7 +140,6 @@ class PairsComu():
                 what_time_click_joined_comu_member = random.randint(0, len(joined_comu_members) - 1)
 
                 for _ in range(what_time_click_joined_comu_member):
-                    print(len(joined_comu_members))
                     time.sleep(random.randint(3, 7))
                     click_member = random.randint(0, len(joined_comu_members) - 1)
                     self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -178,9 +177,54 @@ class PairsComu():
             comu_categoryes[random.randint(0, len(comu_categoryes) - 1)].find_element_by_tag_name("a").click()
             time.sleep(random.randint(3, 7))
 
+        
+        def random_comu_page_choice(self):
+            time.sleep(random.randint(4, 7))
+            comunity_pages = self.driver.find_elements(By.XPATH,
+                                      "//div[@class='box_community_pager box_pager bg_white']/ol")[0].find_elements_by_tag_name("li")
+            rand_int = random.randint(0, len(comunity_pages) - 1)
+            if rand_int != 0:
+                comunity = comunity_pages[rand_int].find_element_by_tag_name("a").click()
+
+            time.sleep(random.randint(3, 5))
+
+            comunities = self.driver.find_element_by_class_name("community_list").find_elements_by_tag_name("li")
+            comunities[random.randint(0, len(comunities) - 1)].find_element_by_tag_name("a").click()
+
+        def random_comu_member_click(self):
+            print("random_comu_member_click")
+            for _ in range(random.randint(1, 10)):
+                time.sleep(random.randint(3, 4))
+                comu_members = self.driver.find_element_by_class_name("list_view_users").find_elements_by_tag_name("li")
+
+
+                what_time_click_comu_members = random.randint(0, len(comu_members) - 1)
+
+                for _ in range(what_time_click_comu_members):
+                    time.sleep(random.randint(3, 7))
+                    click_member = random.randint(0, len(comu_members) - 1)
+                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    comu_members.pop(click_member).find_element_by_tag_name("a").click()
+                    # TODO あとで0~20秒に
+                    time.sleep(random.randint(2, 7))
+                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    self.driver.find_element_by_class_name("box_modal_personal_view").find_element_by_tag_name("a").click()
+                    time.sleep(random.randint(2, 7))
+                    print(len(comu_members))
+
+                time.sleep(random.randint(0, 5))
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                self.driver.find_element_by_xpath(
+                    "//a[@class='pager_next pager_item button_c button_white_a']").click()
+
+
+
+
         def random_category_comu_main(self):
             try:
                 self.random_category_page_get()
+                self.random_comu_page_choice()
+
             except Exception as e:
                 print(e, 'error occurred')
                 time.sleep(30)
@@ -195,6 +239,7 @@ class PairsComu():
         # see_comu.see_my_comu_main()
         random_category_comu = self.RandomCategoryComu(self.driver)
         random_category_comu.random_category_comu_main()
+        random_category_comu.random_comu_member_click()
 
 # TODO 全てのサブモジュールの共通関数を支配するクラスを作成
 
