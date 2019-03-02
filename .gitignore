@@ -3,3 +3,4 @@ deploy_package.zip
 /binbin
 .env
 .idea/
+.vscode/

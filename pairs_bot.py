@@ -175,7 +175,8 @@ class PairsComu():
         def random_category_page_get(self):
             time.sleep(random.randint(3, 7))
             comu_categoryes = self.driver.find_element_by_class_name("community_category_list").find_elements_by_tag_name("li")
-            print(len(comu_categoryes))
+            comu_categoryes[random.randint(0, len(comu_categoryes) - 1)].find_element_by_tag_name("a").click()
+            time.sleep(random.randint(3, 7))
 
         def random_category_comu_main(self):
             try:
