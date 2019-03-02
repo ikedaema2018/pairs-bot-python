@@ -34,7 +34,7 @@ class SetUp():
         if os.getenv("ENVIRONMENT", "") == "develop":
             print("dev")
             driver_path = "./binbin/chromedriver"
-            options.add_argument("--headless")
+            # options.add_argument("--headless")
         else:
             print("pro")
             driver_path = "./bin/chromedriver"
@@ -85,17 +85,25 @@ class PairsMain():
         self.random_play_module()
 
     def kill_popup(self):
-        for i in range(3):
-            try:
-                time.sleep(random.randint(1, 3))
-                modals = self.driver.find_element_by_xpath("//div[@class='box_modal_window modal_animation pickup_modal']")
-                time.sleep(2)
-                modals.find_element_by_tag_name("a").click()
-            except Exception as e:
-                print("no popup ")
-                print(e)
-                time.sleep(2)
-                break
+    
+        time.sleep(random.randint(5, 8))
+        print("killPopup")
+        try:
+            modals = self.driver.find_element_by_xpath("//div[@class='box_modal_window modal_animation pickup_modal']")
+            time.sleep(2)
+            modals.find_element_by_tag_name("a").click()
+        except Exception as e:
+            print("no popup normal_modal")
+            print(e)
+        
+        try:
+            time.sleep(random.randint(3, 5))
+            welcome_modal = self.driver.find_element_by_id("welcome_close_button")
+            welcome_modal.click()
+        except Exception as e:
+            print("no popup welcome_modal")
+            print(e)
+
 
 
     def random_play_module(self):
@@ -109,6 +117,7 @@ class PairsComu():
         self.driver = driver
 
     def comu_page_for_grid(self):
+        time.sleep(random.randint(11, 17))
         self.driver.get("https://pairs.lv/#/community")
 
 
@@ -150,8 +159,8 @@ class PairsComu():
         def see_my_comu_main(self):
             try:
                 # TODO 2列目のゲームナンバーに行く処理も書く
-                game_number = random.randint(0, 4)
-                self.joined_comu_enter(game_number)
+                comu_number = random.randint(0, 4)
+                self.joined_comu_enter(comu_number)
                 time.sleep(random.randint(3, 6))
                 self.joined_comu_member_click()
             except Exception as e:
@@ -159,14 +168,32 @@ class PairsComu():
                 time.sleep(30)
 
 
+    class RandomCategoryComu():
+        def __init__(self, driver):
+            self.driver = driver
 
+        def random_category_page_get(self):
+            time.sleep(random.randint(3, 7))
+            comu_categoryes = self.driver.find_element_by_class_name("community_category_list").find_elements_by_tag_name("li")
+            print(len(comu_categoryes))
+
+        def random_category_comu_main(self):
+            try:
+                self.random_category_page_get()
+            except Exception as e:
+                print(e, 'error occurred')
+                time.sleep(30)
+            
+            
     def pairs_comu_main(self):
         self.comu_page_for_grid()
         time.sleep(3)
         game_number = random.randint(0, 4)
-
-        see_comu = self.SeeMyComu(self.driver)
-        see_comu.see_my_comu_main()
+        print("頑張って！！！")
+        # see_comu = self.SeeMyComu(self.driver)
+        # see_comu.see_my_comu_main()
+        random_category_comu = self.RandomCategoryComu(self.driver)
+        random_category_comu.random_category_comu_main()
 
 # TODO 全てのサブモジュールの共通関数を支配するクラスを作成
 
