@@ -1,4 +1,4 @@
-# lambda環境でheadlesschromeが動かない？ので終了
+# <font color="Red">lambda環境でheadlesschromeが動かない？ので終了</font>
 
 
 # bin/ 下にheadless-chromium を追加する
